@@ -51,7 +51,7 @@ int main(int argc, char** args)
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
-
+ IMG_Quit();
 	return 0;
 
 }
