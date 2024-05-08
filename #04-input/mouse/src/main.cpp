@@ -38,7 +38,6 @@ int main(int argc, char** argv) {
 			// When you pressed down a button on Mouse 
 			if (event->type == SDL_MOUSEBUTTONDOWN)
 			{
-				// SDL_GetKeyName funciton return the string accornding to Code
 				switch (event->button.button) // for get match mouse input
 				{
 				case SDL_BUTTON_LEFT:
