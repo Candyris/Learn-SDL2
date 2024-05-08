@@ -45,7 +45,8 @@ int main(int argc, char** args)
 		SDL_RenderClear(renderer);
 		
 		// Draw Object 
-		SDL_RenderCopy(renderer,imageTexture,NULL,&destImg); // see last 2 argument we set to null so we make it default to fullscreen
+		SDL_RenderCopy(renderer,imageTexture,NULL,&destImg); 
+		// set last argument to destImg which store Size and Position to display on window or screen 
 	
 		// Present the renderer to display the content.
 		SDL_RenderPresent(renderer);
