@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/risha/Documents/GitHub/Learn-SDL2/#06-DrawLine/src",
-      "program": "c:/Users/risha/Documents/GitHub/Learn-SDL2/#06-DrawLine/src/build/Debug/outDebug",
+      "cwd": "c:/Users/risha/Documents/GitHub/Learn-SDL2/#14-Animation_Sprite/src",
+      "program": "c:/Users/risha/Documents/GitHub/Learn-SDL2/#14-Animation_Sprite/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
