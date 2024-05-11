@@ -33,7 +33,10 @@ int main(int argc, char **argv)
 
     int success = SDL_QueueAudio(deviceId, wavBuffer, wavLength);
     SDL_PauseAudioDevice(deviceId, 0);
-    // keep application running long enough to hear the sound
+    // This line is unpausing the audio device, which means the audio will start playing.
+
+    // 'deviceId' is the ID of the audio device that you want to unpause.
+    // The second argument is 0, which means unpause. If it was 1, it would pause the device.
 
     SDL_Delay(3000);
 
