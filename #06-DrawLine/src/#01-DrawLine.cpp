@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     {
         return -1;
     }
-    SDL_Window *window = SDL_CreateWindow("Draw Lines", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+    SDL_Window *window = SDL_CreateWindow("Draw line", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
     SDL_Renderer *ren = SDL_CreateRenderer(window, -1, 0);
     SDL_Event event;
 
