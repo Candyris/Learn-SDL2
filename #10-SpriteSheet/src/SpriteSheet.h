@@ -11,4 +11,7 @@ public:
 	void update(int p_DeltaTime) override;
 protected:
 	std::vector<SDL_Rect> m_SpriteSheetDsntRect;
+  int m_CurrentSpriteIndex; // Index of the current sprite being displayed
+    int m_SpriteSheetDelay; // Delay between sprite changes in milliseconds
+    int m_TimeSinceLastSpriteChange; // Time elapsed since last sprite change
 };
