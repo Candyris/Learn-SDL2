@@ -7,7 +7,7 @@ public:
 	SpriteSheet();
 	void setSourceImageSize(Vector2i p_SrcImgPos) override;
 	void setSourceImagePosition(Vector2i p_SrcImgSize) override;
-	void setSpriteSheetDelay(int p_ms);
+	void setSpriteSheetDelay(int p_MilliSecond);
 	void update(int p_DeltaTime) override;
 protected:
 	std::vector<SDL_Rect> m_SpriteSheetDsntRect;
