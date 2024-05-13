@@ -15,10 +15,10 @@ class Sprite
 protected:
 	virtual void  initVariable();
 public:
-	Sprite() {}
-	Sprite(SDL_Renderer* p_Renderer, const char* filePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize);
+	Sprite() { initVariable(); }
+	Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize);
 	Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize, Vector2i p_DsntSpritePosition);
-	//Sprite(const char* filePath, Vector2i srcPosition, Vector2i dsntPosition);
+	Sprite(const char* p_FilePath,SDL_Renderer* p_Renderer, SDL_Rect srcRect, SDL_Rect dsntRect);
 	virtual ~Sprite();
 
 	virtual void setSourceImageSize(Vector2i p_SrcImgPos);
@@ -30,6 +30,7 @@ public:
 	void setDrawSize(Vector2i p_Size);
 	void setRotate(int p_Angle);
 	void setFlip(SDL_RendererFlip p_Flip);
+	void setRotateAxis(SDL_Point centre);
 	void loadTexture(const char* p_FilePath);
 
 	// getters
@@ -37,8 +38,7 @@ public:
 	Vector2i getDrawSize();
 	Vector2i getImgPosition();
 	Vector2i getImgSize();
-	int getRotate();
-
+	int getRotate() const;
 
 	//void setOrgin();
 	virtual void update(int p_DeltaTime) {};
@@ -49,6 +49,7 @@ protected:
 	SDL_RendererFlip m_SpriteFlip;
 	int m_SpriteAngle;
 	SDL_Rect m_SpriteDsntRect;
+	SDL_Point* m_AxisPointRotatoAgainst;
 private:
 	SDL_Rect m_SpriteSrcRect;
 };
