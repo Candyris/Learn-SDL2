@@ -1,4 +1,5 @@
 #include <SDL2/SDL_image.h>
+#include <stdio.h>
 #include "Sprite.h"
 
 void Sprite::initVariable()
@@ -19,12 +20,15 @@ void Sprite::initVariable()
 	
 }
 
-Sprite::Sprite(SDL_Renderer* p_Renderer, const char* filePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize)
+Sprite::Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize)
 {
 	initVariable();
 	// setting parmeter to class member
 	m_Renderer = p_Renderer;
-	m_SpriteTexture = IMG_LoadTexture(m_Renderer, filePath);
+	m_SpriteTexture = IMG_LoadTexture(m_Renderer, p_FilePath);
+	if (!m_SpriteTexture) {
+		printf("Unable to load texture. SDL_image Error: %s\n", IMG_GetError());
+	}
 
 	// setting geometry of Sprite
 	m_SpriteSrcRect.x = p_SrcSpritePosition.x;
@@ -39,7 +43,10 @@ Sprite::Sprite(SDL_Renderer* p_Renderer, const char* filePath, Vector2i p_SrcSpr
 	// setting parmeter to class member
 	m_Renderer = p_Renderer;
 	m_SpriteAngle = SDL_FLIP_NONE;
-	m_SpriteTexture = IMG_LoadTexture(m_Renderer,filePath);
+	m_SpriteTexture = IMG_LoadTexture(m_Renderer, filePath);
+	if (!m_SpriteTexture) {
+		printf("Unable to load texture. SDL_image Error: %s\n", IMG_GetError());
+	}
 
 	// setting geometry of Sprite
 	m_SpriteSrcRect.x = p_SrcSpritePosition.x;
@@ -66,7 +73,7 @@ void Sprite::render()
 	}
 	else
 	{
-		SDL_RenderCopyEx(m_Renderer, m_SpriteTexture, NULL, &m_SpriteDsntRect, m_SpriteAngle, NULL, m_SpriteFlip);
+		SDL_RenderCopyEx(m_Renderer, m_SpriteTexture, &m_SpriteSrcRect, &m_SpriteDsntRect, m_SpriteAngle, NULL, m_SpriteFlip);
 	}
 }
 // Setters 
