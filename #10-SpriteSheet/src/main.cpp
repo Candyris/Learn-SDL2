@@ -1,38 +1,63 @@
 #include <SDL2/SDL.h>
-#include "Sprite/Sprite.h"
-#include <SDL2/SDL_image.h>
+#include "SpriteSheet/SpriteSheet.h"
 
-int main(int argc, char *argv[])
-{
-	// initalize SDL2
-	if (SDL_Init(SDL_INIT_VIDEO) != 0 &&
-		IMG_Init(IMG_INIT_PNG | IMG_INIT_WEBP | IMG_INIT_JPG) != 0)
-	{
-		return -1; // Failed to initialize SDL2 so, the program
-	}
+int main(int argc, char ** argv) {
+    // Initialize SDL
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
+        return 1;
+    }
 
-	// initilizing window, renderer and event
-	SDL_Window *window = SDL_CreateWindow("SDL2 Rectangle", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, SDL_WINDOW_SHOWN);
-	SDL_Renderer *ren = SDL_CreateRenderer(window, -1, 0);
-	SDL_Event event;
+    // Create a window
+    SDL_Window* window = SDL_CreateWindow("Sprite Sheet Example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!window) {
+        SDL_Log("Failed to create window: %s", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
 
-	Sprite player(ren, "Player.png", Vector2i(20, 20), Vector2i(100, 120), Vector2i(200, 200));
-	bool running = true;
-	while (running)
-	{
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				running = false;
-			}
-		}
-		SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
-		SDL_RenderClear(ren);
+    // Create a renderer
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!renderer) {
+        SDL_Log("Failed to create renderer: %s", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
 
-		player.render();
-		SDL_RenderPresent(ren);
-	}
+    // Load a sprite sheet
+    SpriteSheet spriteSheet(renderer, "player.png", Vector2i(20, 20), Vector2i(120, 120), 1, 4); // 2 rows, 2 columns
+    spriteSheet.setDrawSize(Vector2i(300, 300));
+    // Main loop
+    bool quit = false;
+    SDL_Event event;
+    while (!quit) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
+            }
+        }
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        // Update sprite sheet
+        spriteSheet.update(300); // Assuming 60 FPS, so the delta time is approximately 16 milliseconds
 
-	return 0;
+        // Clear the screen
+        SDL_RenderClear(renderer);
+
+        // Render the sprite sheet
+        spriteSheet.render();
+
+        // Present the renderer
+        SDL_RenderPresent(renderer);
+
+        // Delay to achieve approximately 60 FPS
+        SDL_Delay(300);
+    }
+
+    // Cleanup
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return 0;
 }
