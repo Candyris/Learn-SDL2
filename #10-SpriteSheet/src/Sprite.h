@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 
-#define SPRITE_SIZE 20
+#define SPRITE_SIZE 100
 
 class Vector2i {
 public:
@@ -17,7 +17,7 @@ protected:
 public:
 	Sprite() {}
 	Sprite(SDL_Renderer* p_Renderer, const char* filePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize);
-	Sprite(SDL_Renderer* p_Renderer, const char* filePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize, Vector2i p_DsntSpritePosition);
+	Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize, Vector2i p_DsntSpritePosition);
 	//Sprite(const char* filePath, Vector2i srcPosition, Vector2i dsntPosition);
 	virtual ~Sprite();
 
@@ -41,7 +41,7 @@ public:
 
 
 	//void setOrgin();
-	virtual void update(int p_DeltaTime) = 0;
+	virtual void update(int p_DeltaTime) {};
 	virtual void render();
 protected:
 	SDL_Renderer* m_Renderer;
