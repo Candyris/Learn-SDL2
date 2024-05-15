@@ -14,21 +14,21 @@ void Sprite::initVariable()
 	m_SpriteSrcRect.y = 0;
 	m_SpriteSrcRect.w = 0;
 	m_SpriteSrcRect.h = 0;
-	
+
 	m_SpriteDsntRect.x = 0;
 	m_SpriteDsntRect.y = 0;
 	m_SpriteDsntRect.w = SPRITE_SIZE;
 	m_SpriteDsntRect.h = SPRITE_SIZE;
-	
 }
 
-Sprite::Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize)
+Sprite::Sprite(SDL_Renderer *p_Renderer, const char *p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize)
 {
 	initVariable();
 	// setting parmeter to class member
 	m_Renderer = p_Renderer;
 	m_SpriteTexture = IMG_LoadTexture(m_Renderer, p_FilePath);
-	if (!m_SpriteTexture) {
+	if (!m_SpriteTexture)
+	{
 		SDL_Log("Unable to load texture. SDL_image Error: %s\n", IMG_GetError());
 	}
 
@@ -39,14 +39,15 @@ Sprite::Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcS
 	m_SpriteSrcRect.h = p_SrcSpriteSize.y;
 }
 
-Sprite::Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize, Vector2i p_DsntSpritePosition)
+Sprite::Sprite(SDL_Renderer *p_Renderer, const char *p_FilePath, Vector2i p_SrcSpritePosition, Vector2i p_SrcSpriteSize, Vector2i p_DsntSpritePosition)
 {
 	initVariable();
 	// setting parmeter to class member
 	m_Renderer = p_Renderer;
 	m_SpriteAngle = SDL_FLIP_NONE;
 	m_SpriteTexture = IMG_LoadTexture(m_Renderer, p_FilePath);
-	if (!m_SpriteTexture) {
+	if (!m_SpriteTexture)
+	{
 		SDL_Log("Unable to load texture. SDL_image Error: %s\n", IMG_GetError());
 	}
 
@@ -58,18 +59,35 @@ Sprite::Sprite(SDL_Renderer* p_Renderer, const char* p_FilePath, Vector2i p_SrcS
 
 	m_SpriteDsntRect.x = p_DsntSpritePosition.x;
 	m_SpriteDsntRect.y = p_DsntSpritePosition.y;
-
 }
 
-Sprite::Sprite(const char* p_FilePath,SDL_Renderer* p_Renderer ,SDL_Rect srcRect, SDL_Rect dsntRect)
+Sprite::Sprite(SDL_Renderer *p_Renderer, const char *p_FilePath, SDL_Rect srcRect, SDL_Rect dsntRect)
+	: m_SpriteSrcRect(srcRect), m_SpriteDsntRect(dsntRect)
 {
 	initVariable();
 	// setting parmeter to class member
 	m_Renderer = p_Renderer;
 	m_SpriteTexture = IMG_LoadTexture(m_Renderer, p_FilePath);
-	if (!m_SpriteTexture) {
+	if (!m_SpriteTexture)
+	{
 		SDL_Log("Unable to load texture. SDL_image Error: %s\n", IMG_GetError());
+		return;
 	}
+}
+
+Sprite::Sprite(SDL_Renderer *p_Renderer, const char *p_FilePath)
+{
+	initVariable();
+	// setting parmeter to class member
+	m_Renderer = p_Renderer;
+	m_SpriteTexture = IMG_LoadTexture(m_Renderer, p_FilePath);
+	if (!m_SpriteTexture)
+	{
+		SDL_Log("Unable to load texture. SDL_image Error: %s\n", IMG_GetError());
+		return;
+	}
+	SDL_QueryTexture(m_SpriteTexture, NULL, NULL, &m_SpriteSrcRect.w, &m_SpriteSrcRect.h);
+	m_SpriteDsntRect = {0, 0, m_SpriteSrcRect.w, m_SpriteSrcRect.h};
 }
 
 Sprite::~Sprite()
@@ -86,25 +104,24 @@ void Sprite::render()
 {
 	if (m_SpriteSrcRect.w == 0 && m_SpriteSrcRect.h == 0)
 	{
-		SDL_RenderCopyEx(m_Renderer,m_SpriteTexture,NULL,&m_SpriteDsntRect,m_SpriteAngle,m_AxisPointRotatoAgainst,m_SpriteFlip);
+		SDL_RenderCopyEx(m_Renderer, m_SpriteTexture, NULL, &m_SpriteDsntRect, m_SpriteAngle, m_AxisPointRotatoAgainst, m_SpriteFlip);
 	}
 	else
 	{
 		SDL_RenderCopyEx(m_Renderer, m_SpriteTexture, &m_SpriteSrcRect, &m_SpriteDsntRect, m_SpriteAngle, m_AxisPointRotatoAgainst, m_SpriteFlip);
 	}
 }
-// Setters 
+// Setters
 void Sprite::setSourceImageSize(Vector2i p_SrcImgPos)
 {
 	m_SpriteSrcRect.x = p_SrcImgPos.x;
 	m_SpriteSrcRect.y = p_SrcImgPos.y;
-	
 }
 
 void Sprite::setSourceImagePosition(Vector2i p_SrcImgSize)
 {
-		m_SpriteSrcRect.w = p_SrcImgSize.x;
-		m_SpriteSrcRect.h = p_SrcImgSize.y;
+	m_SpriteSrcRect.w = p_SrcImgSize.x;
+	m_SpriteSrcRect.h = p_SrcImgSize.y;
 }
 
 void Sprite::setDrawPosition(Vector2i p_Position)
@@ -115,8 +132,8 @@ void Sprite::setDrawPosition(Vector2i p_Position)
 
 void Sprite::setDrawSize(Vector2i p_Size)
 {
-	m_SpriteSrcRect.x = p_Size.x;
-	m_SpriteSrcRect.y = p_Size.y;
+	m_SpriteDsntRect.w = p_Size.x;
+	m_SpriteDsntRect.h = p_Size.y;
 }
 
 void Sprite::setRotate(int p_Angle)
@@ -136,7 +153,7 @@ void Sprite::setRotateAxis(SDL_Point centre)
 // Getters
 Vector2i Sprite::getDrawPosition()
 {
-	return Vector2i(m_SpriteSrcRect.x , m_SpriteSrcRect.y);
+	return Vector2i(m_SpriteSrcRect.x, m_SpriteSrcRect.y);
 }
 
 Vector2i Sprite::getDrawSize()
@@ -154,18 +171,18 @@ Vector2i Sprite::getImgSize()
 	return Vector2i(m_SpriteDsntRect.w, m_SpriteDsntRect.h);
 }
 
-int Sprite::getRotate() const 
+int Sprite::getRotate() const
 {
 	return m_SpriteAngle;
 }
 
 // loaders
-void Sprite::loadTexture(const char* p_FilePath)
+void Sprite::loadTexture(const char *p_FilePath)
 {
 	SDL_DestroyTexture(m_SpriteTexture);
 	m_SpriteTexture = IMG_LoadTexture(m_Renderer, p_FilePath);
-	if (!m_SpriteTexture) {
+	if (!m_SpriteTexture)
+	{
 		SDL_Log("Unable to load texture. SDL_image Error: %s\n", IMG_GetError());
 	}
 }
-

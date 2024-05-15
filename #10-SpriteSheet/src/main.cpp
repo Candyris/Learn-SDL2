@@ -1,24 +1,28 @@
 #include <SDL2/SDL.h>
 #include "SpriteSheet/SpriteSheet.h"
 
-int main(int argc, char ** argv) {
+int main(int argc, char **argv)
+{
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
         return 1;
     }
 
     // Create a window
-    SDL_Window* window = SDL_CreateWindow("Sprite Sheet Example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    if (!window) {
+    SDL_Window *window = SDL_CreateWindow("Sprite Sheet Example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!window)
+    {
         SDL_Log("Failed to create window: %s", SDL_GetError());
         SDL_Quit();
         return 1;
     }
 
     // Create a renderer
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!renderer) {
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!renderer)
+    {
         SDL_Log("Failed to create renderer: %s", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -31,15 +35,20 @@ int main(int argc, char ** argv) {
     // Main loop
     bool quit = false;
     SDL_Event event;
-    while (!quit) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+    Uint32 initialTime, finalTime = 0;
+
+    while (!quit)
+    {
+        initialTime = SDL_GetTicks();
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
                 quit = true;
             }
         }
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         // Update sprite sheet
-        spriteSheet.update(300); // Assuming 60 FPS, so the delta time is approximately 16 milliseconds
 
         // Clear the screen
         SDL_RenderClear(renderer);
@@ -50,8 +59,9 @@ int main(int argc, char ** argv) {
         // Present the renderer
         SDL_RenderPresent(renderer);
 
-        // Delay to achieve approximately 60 FPS
-        SDL_Delay(300);
+        SDL_Delay(16);
+        finalTime = SDL_GetTicks();
+        spriteSheet.update(16);
     }
 
     // Cleanup
